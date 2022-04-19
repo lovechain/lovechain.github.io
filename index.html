@@ -1,52 +1,91 @@
-    <meta charset="utf-8">
+<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <link rel="icon" type="image/x-icon" href="cy.png">
 <title>CY STAINLESS STEEL ENTERPRISE</title>
-<img src="cy.png" style="margin: 0 auto; width:64px; height:64px; display:block;" />
-<p style="margin: 0 auto; display:block; text-align: center; font-weight:bold;">CY STAINLESS STEEL ENTERPRISE <br> 超越白鋼企業</p>
-<br>
-<br>
-<div style="text-align:center">
-    tingkap tinggi dalam (mm) : 
-    <br>
-    <br>
-    <input id="heightcm" type="number" onchange="fnCalcGap(value)"></input>
 
+<link rel="icon" type="image/x-icon" href="cy.png">
+<img src="cy.png" style="margin: 0 auto; width:64px; height:64px; display:block;" />
+<p style="margin: 0 auto; display:block; text-align: center; font-weight:bold;">
+    CY STAINLESS STEEL
+</p>
+<br>
+<br>
+<div style="display:inline-block; table-layout:fixed; width:100%;">
+    <div style="display: table-cell; width:45%; ">
+        Height (mm)
+    </div>
+    <div style="display:table-cell; width:45%; ">
+        <input id="h" type="number" ></input>
+</div>
+<br>
+<div style="display:inline-block; table-layout:fixed; width:100%;">
+    <div style="display: table-cell; width:45%; ">
+        Width (mm)
+    </div>
+    <div style="display:table-cell; width:45%; ">
+        <input id="w" type="number" ></input>
+</div>
+<br>
+<div style="display:inline-block; table-layout:fixed; width:100%;">
+    <div style="display: table-cell; width:45%; ">
+        Long Gap (mm)
+    </div>
+    <div style="display:table-cell; width:45%; ">
+        <input id="maxl" type="number" ></input>
+</div>
+<br>
+<div style="display:inline-block; table-layout:fixed; width:100%;">
+    <div style="display: table-cell; width:45%; ">
+        Short Gap (mm)
+    </div>
+    <div style="display:table-cell; width:45%; ">
+        <input id="minl" type="number" ></input>
+</div>
+</div>
+<br>
+<br>
+<div style="text-align:right; width:100%;">
+<button style="border-radius:5px; outline:none; border:none; background: #1DA1F2; color:#FFF; width:64px; height:32px;" onclick="fnCalcGap(h.value,w.value,maxl.value,minl.value);">
+    Kira
+</button>
 </div>
 
 <script>
-function fnCalcGap(cm) {
-document.getElementById("heightcm").value="";
-var height = cm;
-var templine = Math.trunc(height/109);
+function fnCalcGap(h,w,maxl,minl) {
+document.getElementById("h").value = "";
+document.getElementById("w").value = "";
+document.getElementById("minl").value = "";
+document.getElementById("maxl").value = "";
+var height = h;
+var templine = Math.trunc(height/maxl);
 do {
-var templine2 = (height-(templine*19))/(templine+1)
-if (templine2 < 100)
+var templine2 = (height-(templine*w))/(templine+1)
+if (templine2 < minl)
 templine--;
-}while (templine2 < 100);
+}while (templine2 < minl);
 
 var bigtempline = templine-1;
-var bigtempline2 = (height-(bigtempline*19))/(bigtempline+1);
+var bigtempline2 = (height-(bigtempline*w))/(bigtempline+1);
 
 var gap =
 (Math.floor(templine2*100)/100);
 var gap2 = (Math.floor(bigtempline2*100)/100);
 
-if (bigtempline2 >= 110) {
+if (bigtempline2 >= maxl) {
 bigtempline = "-";
 gap2 = "-"
 }
 
 alert(
-"lobang: "+ gap +"("+ mmtoinch(gap)+")\n"+
-"batang: "+templine + "\n\n" +
-"lobang lebih besar: "+ gap2 + "("+ mmtoinch(gap2)+")\n" +
-"batang lebih besar: "+bigtempline + "\n");
+"gap: "+ gap +"("+ mmtoinch(gap)+")\n"+
+"line: "+templine + "\n\n" +
+"gap besar: "+ gap2 + "("+ mmtoinch(gap2)+")\n" +
+"line besar: "+bigtempline + "\n");
 }
 
 function mmtoinch(x) {
-    if(x==="-") 
-    return x;
+if (x === "-")
+return x;
 var inch = Math.trunc(x/25.4);
 var frac = Math.trunc((x/25.4- inch)*8);
 var fracdec = Math.floor((((x/25.4 - inch) *8) - frac)*100);
